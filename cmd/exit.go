@@ -7,19 +7,19 @@ import (
 
 type Exit struct {}
 
-func NewExit() Exit {
-	return Exit{}
+func NewExit() *Exit {
+	return &Exit{}
 }
 
-func (c Exit) Name() string {
+func (c *Exit) Name() string {
 	return "exit"
 }
 
-func (c Exit) Doc() string {
+func (c *Exit) Doc() string {
 	return "Quit the pokedex"
 }
 
-func (c Exit) Cmd(args []string) (Result, error) {
+func (c *Exit) Cmd(args []string) (Result, error) {
 	if len(args) != 0 {
 		return Result{}, errors.New(fmt.Sprintf("%s: does not accept any arguments", c.Name()))
 	}

@@ -13,19 +13,19 @@ type Help struct {
 	mesg *string
 }
 
-func NewHelp(cmds []Cmd) Help {
-	return Help{cmds: cmds}
+func NewHelp(cmds []Cmd) *Help {
+	return &Help{cmds: cmds}
 }
 
-func (c Help) Name() string {
+func (c *Help) Name() string {
 	return "help"
 }
 
-func (c Help) Doc() string {
+func (c *Help) Doc() string {
 	return "Print this help message."
 }
 
-func (c Help) Cmd(args []string) (Result, error) {
+func (c *Help) Cmd(args []string) (Result, error) {
 	if len(args) != 0 {
 		return Result{}, errors.New(fmt.Sprintf("%s: does not accept any arguments", c.Name()))
 	}
@@ -38,7 +38,7 @@ func (c Help) Cmd(args []string) (Result, error) {
 	return Result{Mesg: *c.mesg}, nil
 }
 
-func (c Help) generateHelpMessage() string {
+func (c *Help) generateHelpMessage() string {
 	var b strings.Builder
 	b.WriteString("The Pokedex-CLI supports the following commands:\n")
 	for _, cmd := range c.cmds {

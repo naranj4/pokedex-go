@@ -1,0 +1,4 @@
+The Pokedex-CLI supports the following commands:
+- `stub1`: Doc1
+- `stub2`: Doc2
+- `help`: Print this help message.
