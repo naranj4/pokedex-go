@@ -1,0 +1,12 @@
+Welcome to Pokedex-CLI!
+
+pokedex > exit is not a valid command. Try 'help' for a list of valid commands.
+
+pokedex > 
+pokedex > The Pokedex-CLI supports the following commands:
+- `quit`: Quit the REPL.
+- `help`: Print this help message.
+
+pokedex > Quit does not accept additional arguments.
+
+pokedex > 
