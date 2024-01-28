@@ -23,6 +23,14 @@ func br() {
 func getCommands() []cmd.Cmd {
 	cmds := []cmd.Cmd{
 		cmd.NewExit(),
+		// TODO:
+		// - regions
+		// - region <name/id> (sets context)
+		// - locations (within region)
+		// - location <name/id> (sets context)
+		// - areas (within location)
+		// - area <name/id> (sets context)
+		// - pokemon <name/id> (looks up pokemon)
 	}
 	cmds = append(cmds, cmd.NewHelp(cmds))
 	return cmds
