@@ -1,5 +1,6 @@
-exit
+not-a-command
 
 help
+?
 quit 15
 quit

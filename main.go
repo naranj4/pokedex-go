@@ -23,7 +23,11 @@ func getCommands() []cmd.Cmd {
 }
 
 func main() {
-	r := repl.NewRepl(getCommands(), os.Stdin, os.Stdout)
+	r, err := repl.NewRepl(getCommands(), os.Stdin, os.Stdout)
+	if err != nil {
+		panic(err)
+	}
+
 	r.Start()
 	for r.IsActive() {
 		r.Next()

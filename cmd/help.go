@@ -21,6 +21,10 @@ func (c *Help) Name() string {
 	return "help"
 }
 
+func (c *Help) Aliases() []string {
+	return []string{"h", "?"}
+}
+
 func (c *Help) Doc() string {
 	return "Print this help message."
 }
@@ -56,5 +60,17 @@ func document(cmd Cmd, args ...string) string {
 	if len(args) > 0 {
 		term = args[0]
 	}
-	return fmt.Sprintf("- `%s`: %s%s", cmd.Name(), cmd.Doc(), term)
+
+	var aliases []string
+	for _, a := range cmd.Aliases() {
+		aliases = append(aliases, fmt.Sprintf("`%s`", a))
+	}
+
+	return fmt.Sprintf(
+		"- `%s` (%s): %s%s",
+		cmd.Name(),
+		strings.Join(aliases, ", "),
+		cmd.Doc(),
+		term,
+	)
 }
