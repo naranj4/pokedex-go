@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type Exit struct {}
+type Exit struct{}
 
 func NewExit() Exit {
 	return Exit{}

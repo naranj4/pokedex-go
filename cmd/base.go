@@ -8,6 +8,6 @@ type Cmd interface {
 }
 
 type Result struct {
-	Mesg string
+	Mesg       string
 	IsTerminal bool
 }

@@ -6,16 +6,18 @@ import (
 	"testing"
 )
 
-type StubCmd1 struct {}
-func (s StubCmd1) Name() string { return "stub1" }
-func (s StubCmd1) Aliases() []string { return []string{"s1"} }
-func (s StubCmd1) Doc() string { return "Doc1" }
+type StubCmd1 struct{}
+
+func (s StubCmd1) Name() string                      { return "stub1" }
+func (s StubCmd1) Aliases() []string                 { return []string{"s1"} }
+func (s StubCmd1) Doc() string                       { return "Doc1" }
 func (s StubCmd1) Cmd(args []string) (Result, error) { return Result{}, nil }
 
-type StubCmd2 struct {}
-func (s StubCmd2) Name() string { return "stub2" }
-func (s StubCmd2) Aliases() []string { return []string{"s2"} }
-func (s StubCmd2) Doc() string { return "Doc2" }
+type StubCmd2 struct{}
+
+func (s StubCmd2) Name() string                      { return "stub2" }
+func (s StubCmd2) Aliases() []string                 { return []string{"s2"} }
+func (s StubCmd2) Doc() string                       { return "Doc2" }
 func (s StubCmd2) Cmd(args []string) (Result, error) { return Result{}, nil }
 
 func TestHelpHappyPath(t *testing.T) {
