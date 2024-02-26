@@ -28,7 +28,7 @@ tidy:
 	@echo
 	go mod tidy -v
 
-## clean: run quality control checks (i.e. linters, etc)
+## check: run quality control checks (i.e. linters, etc)
 .PHONY: check
 check:
 	go mod verify
