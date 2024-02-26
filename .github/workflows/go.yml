@@ -29,10 +29,22 @@ jobs:
       run: go version
 
     - name: Build
-      run: go build -v ./...
+      run: make build
 
     - name: Test
-      run: go test -v -json ./... > test-results.json
+      # Setting bash explicitly uses `set -o pipefail` to execute the step. This ensures that if any
+      # subcommand in the pipe fails, it fails immediately
+      shell: bash
+      # NOTE: I'm sorry for this multi-line command, but I'd like the test output visible in the
+      # GH actions output
+      run: >
+          make -s test addopts=-json
+          | tee test-results.json
+          | jq '. | select(. | has("Output")) | .Output'
+          | jq --slurp -r '. | join("")'
+
+    - name: Lint
+      run: make check
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
