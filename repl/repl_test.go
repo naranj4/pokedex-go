@@ -7,46 +7,33 @@ import (
 	"testing/iotest"
 
 	"github.com/sanka047/pokedex-go/cmd"
+	"github.com/sanka047/pokedex-go/testing/assert"
 )
 
 func TestReplHappyPath(t *testing.T) {
 	in, err := os.Open("testdata/repl_input.txt")
-	if err != nil {
-		t.Fatal("Unable to open input fixture file.")
-	}
+	assert.Ok(t, err)
 
 	var out strings.Builder
 
 	r, err := NewRepl([]cmd.Cmd{cmd.Exit{}}, in, &out)
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Ok(t, err)
 
-	if r.IsActive() {
-		t.Fatal("REPL did not start in the 'inactive' state.")
-	}
+	assert.False(t, r.IsActive(), "REPL did not start in the 'inactive' state.")
 
 	r.Start()
-	if !r.IsActive() {
-		t.Fatal("REPL should transition to an 'active' state")
-	}
+	assert.True(t, r.IsActive(), "REPL should transition to an 'active' state")
 
 	for r.IsActive() {
 		err = r.Next()
-		if err != nil {
-			t.Fatal(err)
-		}
+		assert.Ok(t, err)
 	}
 
 	exp_out, err := os.Open("testdata/repl_output.txt")
-	if err != nil {
-		t.Fatal("Unable to open output fixture file.")
-	}
+	assert.Ok(t, err)
 
 	err = iotest.TestReader(exp_out, []byte(out.String()))
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Ok(t, err)
 }
 
 func TestReplNextOnInactive(t *testing.T) {
@@ -54,16 +41,10 @@ func TestReplNextOnInactive(t *testing.T) {
 	var out strings.Builder
 
 	r, err := NewRepl([]cmd.Cmd{}, in, &out)
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Ok(t, err)
 
-	if r.IsActive() {
-		t.Fatal("REPL did not start in the 'inactive' state.")
-	}
+	assert.False(t, r.IsActive(), "REPL did not start in the 'inactive' state.")
 
 	err = r.Next()
-	if err == nil {
-		t.Fatal("Expected error for calling Next without Start.")
-	}
+	assert.Err(t, err)
 }

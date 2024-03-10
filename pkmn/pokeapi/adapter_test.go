@@ -7,6 +7,8 @@ import (
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/sanka047/pokedex-go/testing/assert"
 )
 
 type RoundTripFunc func(req *http.Request) *http.Response
@@ -22,7 +24,7 @@ func NewTestClient(f RoundTripFunc) *http.Client {
 func TestGetPokemonHappyPath(t *testing.T) {
 	name := "fake-pokemon"
 	client := NewTestClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), fmt.Sprintf("%s/pokemon/%s", BASE_API_PATH, Name(name)))
+		assert.Equals(t, req.URL.String(), fmt.Sprintf("%s/pokemon/%s", BASE_API_PATH, Name(name)))
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       io.NopCloser(bytes.NewBufferString("{}")),
@@ -33,13 +35,13 @@ func TestGetPokemonHappyPath(t *testing.T) {
 
 	api := NewPokeAPI(client)
 	_, err := api.GetPokemon(context.Background(), Name(name))
-	ok(t, err)
+	assert.Ok(t, err)
 }
 
 func TestGetPokemonContextDone(t *testing.T) {
 	name := "fake-pokemon"
 	client := NewTestClient(func(req *http.Request) *http.Response {
-		equals(t, req.URL.String(), fmt.Sprintf("%s/pokemon/%s", BASE_API_PATH, Name(name)))
+		assert.Equals(t, req.URL.String(), fmt.Sprintf("%s/pokemon/%s", BASE_API_PATH, Name(name)))
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			// Will fail JSON parsing if read
@@ -55,23 +57,5 @@ func TestGetPokemonContextDone(t *testing.T) {
 
 	api := NewPokeAPI(client)
 	_, err := api.GetPokemon(ctx, Name(name))
-	notEquals(t, err, nil)
-}
-
-func equals(t *testing.T, act, exp any) {
-	if act != exp {
-		t.Fatalf("Expected:\n\"\"\"\n%v\n\"\"\"\nReceived:\n\"\"\"\n%v\n\"\"\"", exp, act)
-	}
-}
-
-func notEquals(t *testing.T, act, not_exp any) {
-	if act == not_exp {
-		t.Fatalf("Not expected:\n\"\"\"\n%v\n\"\"\"\nReceived:\n\"\"\"\n%v\n\"\"\"", not_exp, act)
-	}
-}
-
-func ok(t *testing.T, err error) {
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.NotEquals(t, err, nil)
 }
