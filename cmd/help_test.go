@@ -4,6 +4,8 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/sanka047/pokedex-go/testing/assert"
 )
 
 type StubCmd1 struct{}
@@ -27,34 +29,21 @@ func TestHelpHappyPath(t *testing.T) {
 	}
 	h := NewHelp(cmds)
 
-	if h.mesg != nil {
-		t.Fatal("There is an existing cached value in h.mesg")
-	}
+	assert.Equals(t, h.mesg, nil)
 
 	dat, err := os.ReadFile("testdata/help-message.txt")
-	if err != nil {
-		t.Fatal("Failed to read data from fixture: ", err)
-	}
+	assert.Ok(t, err)
 
 	res, err := h.Cmd([]string{})
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Ok(t, err)
 
 	exp := Result{Mesg: strings.Trim(string(dat), "\n")}
-	if res != exp {
-		t.Fatalf("Expected:\n\"\"\"\n%v\n\"\"\"\nReceived:\n\"\"\"\n%v\n\"\"\"", exp, res)
-	}
-
-	if h.mesg == nil {
-		t.Fatal("Generated doc was not cached.")
-	}
+	assert.Equals(t, res, exp)
+	assert.NotEquals(t, h.mesg, nil)
 }
 
 func TestHelpExtraArgs(t *testing.T) {
 	h := NewHelp([]Cmd{})
 	_, err := h.Cmd([]string{"a", "b"})
-	if err == nil {
-		t.FailNow()
-	}
+	assert.Err(t, err)
 }
