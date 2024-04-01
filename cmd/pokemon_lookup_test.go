@@ -9,7 +9,7 @@ import (
 	"github.com/sanka047/pokedex-go/testing/assert"
 )
 
-type StubPokeAPI struct {}
+type StubPokeAPI struct{}
 
 func (s StubPokeAPI) GetPokemon(ctx context.Context, identifier string) (pokeapi.Pokemon, error) {
 	return pokeapi.Pokemon{}, nil
