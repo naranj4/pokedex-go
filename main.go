@@ -5,14 +5,15 @@ import (
 	"os"
 
 	"github.com/sanka047/pokedex-go/cmd"
+	"github.com/sanka047/pokedex-go/pkmn"
 	"github.com/sanka047/pokedex-go/pkmn/pokeapi"
 	"github.com/sanka047/pokedex-go/repl"
 )
 
-func getCommands(pokeAPI *pokeapi.PokeAPI) []cmd.Cmd {
+func getCommands(srv pkmn.IPokeService) []cmd.Cmd {
 	cmds := []cmd.Cmd{
 		cmd.NewExit(),
-		cmd.NewPokemonLookup(pokeAPI),
+		cmd.NewPokemonLookup(srv),
 		// TODO:
 		// - regions
 		// - region <name/id> (sets context)
@@ -27,7 +28,8 @@ func getCommands(pokeAPI *pokeapi.PokeAPI) []cmd.Cmd {
 
 func main() {
 	pk_api := pokeapi.NewPokeAPI(http.DefaultClient)
-	r, err := repl.NewRepl(getCommands(pk_api), os.Stdin, os.Stdout)
+	pk_srv := pokeapi.NewPokeAPIService(pk_api)
+	r, err := repl.NewRepl(getCommands(pk_srv), os.Stdin, os.Stdout)
 	if err != nil {
 		panic(err)
 	}
