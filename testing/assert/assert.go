@@ -70,3 +70,13 @@ func Err(t *testing.T, err error) {
 		t.Fatal("Expected error; received nil")
 	}
 }
+
+func Panic(t *testing.T, fn func()) {
+	t.Helper()
+	defer func() {
+		if r := recover(); r == nil {
+			t.Fatal("Expected to panic; no panic occurred")
+		}
+	}()
+	fn()
+}

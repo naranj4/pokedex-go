@@ -11,3 +11,8 @@ type Result struct {
 	Mesg       string
 	IsTerminal bool
 }
+
+type Command interface {
+	Bind(reg Registry) error
+	Run(args []string) (Result, error)
+}
