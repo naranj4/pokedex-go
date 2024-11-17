@@ -47,9 +47,15 @@ check:
 test:
 	go test $(addopts) $(packages)
 
+## generate: run code generators
+.PHONY: generate
+generate:
+	go generate $(addopts) $(packages)
+
 ## build: build the application
 .PHONY: build
 build:
+	go generate ./...
 	go build $(addopts) -o $(BUILD_DIR)/bin/pokedex-cli
 
 ## run: run the application

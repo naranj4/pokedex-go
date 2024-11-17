@@ -13,7 +13,7 @@ func TestPokemonSerialization(t *testing.T) {
 	dat, err := os.ReadFile("testdata/pokemon-response.json")
 	assert.Ok(t, err)
 
-	var pk Pokemon
+	var pk pokemon
 	err = json.Unmarshal(dat, &pk)
 	assert.Ok(t, err)
 

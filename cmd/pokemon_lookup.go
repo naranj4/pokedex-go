@@ -6,15 +6,15 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/sanka047/pokedex-go/pkmn/pokeapi"
+	"github.com/sanka047/pokedex-go/pkmn"
 )
 
 type PokemonLookup struct {
-	pokeAPI pokeapi.IPokeAPI
+	service pkmn.IPokeService
 }
 
-func NewPokemonLookup(p pokeapi.IPokeAPI) *PokemonLookup {
-	return &PokemonLookup{pokeAPI: p}
+func NewPokemonLookup(s pkmn.IPokeService) *PokemonLookup {
+	return &PokemonLookup{service: s}
 }
 
 func (l *PokemonLookup) Name() string {
@@ -31,11 +31,15 @@ func (l *PokemonLookup) Doc() string {
 
 func (l *PokemonLookup) Cmd(args []string) (Result, error) {
 	// TODO: Format this in a more sane way
-	if len(args) != 1 {
-		return Result{}, errors.New(fmt.Sprintf("%s: requires exactly 1 argument (name)", l.Name()))
+	if len(args) != 2 {
+		return Result{}, errors.New(
+			fmt.Sprintf("%s: requires exactly 2 argument (version-group, name)", l.Name()),
+		)
 	}
 
-	pk, err := l.pokeAPI.GetPokemon(context.Background(), pokeapi.Name(args[0]))
+	vg := pkmn.Name(args[0])
+	name := pkmn.Name(args[1])
+	pk, err := l.service.GetPokemon(context.Background(), vg, name)
 	if err != nil {
 		return Result{}, err
 	}
